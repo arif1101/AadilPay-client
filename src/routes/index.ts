@@ -4,7 +4,9 @@ import Contact from "@/pages/Contact";
 import Faq from "@/pages/Faq";
 import Features from "@/pages/Features";
 import Homepage from "@/pages/Homepage";
+import Login from "@/pages/Login";
 import Pricing from "@/pages/Pricing";
+import Register from "@/pages/Register";
 import { createBrowserRouter } from "react-router";
 
 
@@ -39,5 +41,13 @@ export const router = createBrowserRouter([
                 path: "/contact"
             }
         ]
+    },
+    {
+        Component: Login,
+        path: "/login"
+    },
+    {
+        Component: Register,
+        path: "/register"
     }
 ])
