@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { ModeToggle } from "./ModeToggle"
 
 const navigationLinks = [
   { href: "/", label: "Home" },
@@ -111,6 +112,7 @@ export default function Navbar() {
 
         {/* Right side */}
         <div className="flex items-center gap-2">
+          <ModeToggle/>
           <Button asChild variant="ghost" size="sm" className="text-sm">
             <Link to="/login">Log In</Link>
           </Button>
