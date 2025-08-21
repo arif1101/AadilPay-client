@@ -21,31 +21,57 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Link } from "react-router"
+import PasswordInput from "@/components/ui/PasswordInput"
+import { useRegisterMutation } from "@/redux/features/auth/auth.api"
+import {toast} from "sonner"
 
 // ✅ Validation schema
-const formSchema = z.object({
+const registerSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters"),
   phone: z
     .string()
     .min(10, "Phone number is too short")
     .max(15, "Phone number is too long"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  confirmPassword: z.string().min(8,{error: "Confirm password is too short"}),
   role: z.string().min(1, "Please select a role"),
+})
+.refine((data) => data.password === data.confirmPassword, {
+  message: "Password do not match",
+  path: ["confirmPassword"],
 })
 
 export default function Register() {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [register] = useRegisterMutation()
+  const form = useForm<z.infer<typeof registerSchema>>({
+    resolver: zodResolver(registerSchema),
     defaultValues: {
       name: "",
       phone: "",
       password: "",
+      confirmPassword: "",
       role: "",
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  const onSubmit=async(data: z.infer<typeof registerSchema>) => {
+    const userInfo = {
+      name : data.name,
+      phone : data.phone,
+      password : data.password,
+      role : data.role.toLocaleUpperCase()
+    }
+
+    
+
+    try{
+      const result = await register(userInfo).unwrap();
+      console.log(result)
+      toast.success("User created successfully")
+    }catch(error){
+      console.log(error)
+    }
   }
 
   return (
@@ -112,14 +138,24 @@ export default function Register() {
                   <FormItem>
                     <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
                     <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="••••••••"
-                        className="focus:ring-2 focus:ring-pink-400 focus:border-pink-400 rounded-xl"
-                        {...field}
-                      />
+                      <PasswordInput {...field}/>
                     </FormControl>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* confirm password field  */}
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-gray-700 font-medium">Confirm Password</FormLabel>
+                    <FormControl>
+                      <PasswordInput {...field}/>
+                    </FormControl>
+                    <FormMessage/>
                   </FormItem>
                 )}
               />
@@ -137,8 +173,8 @@ export default function Register() {
                           <SelectValue placeholder="Select your role" />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="user">AGENT</SelectItem>
-                          <SelectItem value="admin">USER</SelectItem>
+                          <SelectItem value="AGENT">AGENT</SelectItem>
+                          <SelectItem value="USER">USER</SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -161,9 +197,7 @@ export default function Register() {
         <CardFooter className="flex flex-col gap-3">
           <p className="text-sm text-center text-gray-500">
             Already have an account?{" "}
-            <a href="#" className="text-pink-600 font-medium hover:underline">
-              Login
-            </a>
+            <Link to="/login" className="text-pink-600 font-medium hover:underline">Login</Link>
           </p>
         </CardFooter>
       </Card>
