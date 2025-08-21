@@ -1,5 +1,4 @@
-
-
+import { useLocation, Link } from "react-router"
 import Logo from "@/assets/icons/Logo"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,9 +13,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 
-// Navigation links array to be used in both desktop and mobile menus
 const navigationLinks = [
-  { href: "/", label: "Home", active: true },
+  { href: "/", label: "Home" },
   { href: "/features", label: "Features" },
   { href: "/pricing", label: "Pricing" },
   { href: "/about", label: "About" },
@@ -25,6 +23,9 @@ const navigationLinks = [
 ]
 
 export default function Navbar() {
+  const location = useLocation()
+  const pathname = location.pathname
+
   return (
     <header className="border-b px-4 md:px-6">
       <div className="flex h-16 items-center justify-between gap-4">
@@ -40,8 +41,8 @@ export default function Navbar() {
               >
                 <svg
                   className="pointer-events-none"
-                  width={16}
-                  height={16}
+                  width={20}
+                  height={20}
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -50,32 +51,27 @@ export default function Navbar() {
                   strokeLinejoin="round"
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    d="M4 12L20 12"
-                    className="origin-center -translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-x-0 group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[315deg]"
-                  />
-                  <path
-                    d="M4 12H20"
-                    className="origin-center transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.8)] group-aria-expanded:rotate-45"
-                  />
-                  <path
-                    d="M4 12H20"
-                    className="origin-center translate-y-[7px] transition-all duration-300 ease-[cubic-bezier(.5,.85,.25,1.1)] group-aria-expanded:translate-y-0 group-aria-expanded:rotate-[135deg]"
-                  />
+                  <path d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </Button>
             </PopoverTrigger>
+
             <PopoverContent align="start" className="w-36 p-1 md:hidden">
               <NavigationMenu className="max-w-none *:w-full">
                 <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link, index) => (
-                    <NavigationMenuItem key={index} className="w-full">
-                      <NavigationMenuLink
-                        href={link.href}
-                        className="py-1.5"
-                        active={link.active}
-                      >
-                        {link.label}
+                  {navigationLinks.map((link) => (
+                    <NavigationMenuItem key={link.href} className="w-full">
+                      <NavigationMenuLink asChild>
+                        <Link
+                          to={link.href}
+                          className={`block py-1.5 w-full ${
+                            pathname === link.href
+                              ? "border-b-2 border-primary text-primary font-medium"
+                              : "text-muted-foreground hover:text-primary"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   ))}
@@ -83,22 +79,28 @@ export default function Navbar() {
               </NavigationMenu>
             </PopoverContent>
           </Popover>
-          {/* Main nav */}
+
+          {/* Desktop Nav */}
           <div className="flex items-center gap-6">
-            <a href="#" className="text-primary hover:text-primary/90">
-              <Logo/>
-            </a>
-            {/* Navigation menu */}
+            <Link to="/" className="text-primary hover:text-primary/90">
+              <Logo />
+            </Link>
+
             <NavigationMenu className="max-md:hidden">
               <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <NavigationMenuItem key={index}>
-                    <NavigationMenuLink
-                      active={link.active}
-                      href={link.href}
-                      className="text-muted-foreground hover:text-primary py-1.5 font-medium"
-                    >
-                      {link.label}
+                {navigationLinks.map((link) => (
+                  <NavigationMenuItem key={link.href}>
+                    <NavigationMenuLink asChild>
+                      <Link
+                        to={link.href}
+                        className={`py-1.5 font-medium ${
+                          pathname === link.href
+                            ? "border-b-2 border-primary text-primary"
+                            : "text-muted-foreground hover:text-primary"
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
                     </NavigationMenuLink>
                   </NavigationMenuItem>
                 ))}
@@ -106,10 +108,11 @@ export default function Navbar() {
             </NavigationMenu>
           </div>
         </div>
+
         {/* Right side */}
         <div className="flex items-center gap-2">
           <Button asChild variant="ghost" size="sm" className="text-sm">
-            <a href="#">Sign In</a>
+            <Link to="/login">Log In</Link>
           </Button>
         </div>
       </div>
