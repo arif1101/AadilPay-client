@@ -1,5 +1,4 @@
 import Logo from '@/assets/icons/Logo'
-import React from 'react'
 
 export default function Footer() {
   return (
