@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Phone, DollarSign, Send } from "lucide-react"
-import { useCashOutMutation } from "@/redux/features/user/user.api"
+import { useTransferMutation } from "@/redux/features/user/user.api"
 
 // Define validation schema
 const formSchema = z.object({
@@ -27,9 +27,9 @@ const formSchema = z.object({
     .min(1, { message: "Amount must be at least 1." }),
 })
 
-export function CashOut() {
+export function SendMoney() {
 
-  const [cashOut] = useCashOutMutation()
+  const [transfer] = useTransferMutation()
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,19 +42,24 @@ export function CashOut() {
   const onSubmit = async(data: z.infer<typeof formSchema>)=>{
     console.log("Send Money Payload:", data)
 
-    const cashOutInfo = {
-      agentNumber : data.phone,
+    const transferInfo = {
+      receiverNumber : data.phone,
       amount: data.amount
     }
 
-    const result = await cashOut(cashOutInfo).unwrap()
+    const result = await transfer(transferInfo).unwrap()
     console.log(result)
 
+    // TODO: call backend API here
+    // await fetch("/api/send-money", {
+    //   method: "POST",
+    //   body: JSON.stringify(values),
+    // })
   }
 
   return (
     <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Cash Out</h1>
+      <h1 className="text-3xl font-bold mb-6">Send Money</h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -64,7 +69,7 @@ export function CashOut() {
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Agent Number</FormLabel>
+                <FormLabel>Receiver Phone</FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Phone className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
@@ -109,7 +114,7 @@ export function CashOut() {
           {/* Submit button */}
           <Button type="submit" className="w-full flex items-center gap-2">
             <Send className="h-4 w-4" />
-            Cash Out
+            Send Money
           </Button>
         </form>
       </Form>

@@ -12,13 +12,14 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import Logo from "@/assets/icons/Logo";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api";
 import { getSidebarItems } from "@/utils/getSidebarItems";
 
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
+  const location = useLocation()
   const {data: userData} = useUserInfoQuery(undefined)
   const role = userData?.data?.user?.role
   console.log(userData?.data?.user?.role)
@@ -45,7 +46,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
-                      <Link to={item.url}>{item.title}</Link>
+                      <Link to={item.url}
+                      className={
+                        location.pathname ===item.url ? 
+                        "bg-pink-500 text-white rounded-md px-3 py-2 transition hover:bg-pink-600"
+                        : 
+                        "hover:bg-pink-100 rounded-md px-3 py-2 transition"
+                      }
+                      >{item.title}</Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}

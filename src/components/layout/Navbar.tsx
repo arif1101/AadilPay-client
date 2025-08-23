@@ -13,55 +13,83 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover"
 import { ModeToggle } from "./ModeToggle"
-import { authApi, useLogoutMutation, useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import {
+  authApi,
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@/redux/features/auth/auth.api"
 import { useAppDispatch } from "@/redux/hook"
-import { role } from "@/constant/role"
-import React from "react"
+import { role as Role } from "@/constant/role"
+import { useEffect, useState } from "react"
 
 const navigationLinks = [
-  { href: "/", label: "Home", role: "PUBLIC"},
-  { href: "/features", label: "Features", role: "PUBLIC"},
-  { href: "/pricing", label: "Pricing", role: "PUBLIC"},
-  { href: "/about", label: "About", role: "PUBLIC"},
-  { href: "/faq", label: "FAQ", role: "PUBLIC"},
-  { href: "/contact", label: "Contact", role: "PUBLIC"},
-  {href: "/admin", label: "Dashboard", role: role.Admin},
-  {href: "/agent", label: "Dashboard", role: role.agent},
-  {href: "/user", label: "Dashboard", role: role.user}
+  { href: "/", label: "Home", role: "PUBLIC" },
+  { href: "/features", label: "Features", role: "PUBLIC" },
+  { href: "/pricing", label: "Pricing", role: "PUBLIC" },
+  { href: "/about", label: "About", role: "PUBLIC" },
+  { href: "/faq", label: "FAQ", role: "PUBLIC" },
+  { href: "/contact", label: "Contact", role: "PUBLIC" },
+  { href: "/admin", label: "Dashboard", role: Role.Admin },
+  { href: "/agent", label: "Dashboard", role: Role.agent },
+  { href: "/user", label: "Dashboard", role: Role.user },
 ]
 
 export default function Navbar() {
-  const location = useLocation()
-  const pathname = location.pathname
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const { pathname } = useLocation()
   const dispatch = useAppDispatch()
 
-  const {data} = useUserInfoQuery(undefined)
+  const { data } = useUserInfoQuery(undefined)
   const [logout] = useLogoutMutation()
   const phone = data?.data?.user?.phone
   const role = data?.data?.user?.role
-  console.log(role)
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     await logout(undefined)
     dispatch(authApi.util.resetApiState())
   }
 
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 10)
+    window.addEventListener("scroll", onScroll)
+    return () => window.removeEventListener("scroll", onScroll)
+  }, [])
+
+  // Filter links → show PUBLIC + role specific
+  const visibleLinks = navigationLinks.filter(
+    (l) => l.role === "PUBLIC" || l.role === role
+  )
+
+  const linkBase =
+    "relative px-1 text-sm font-medium transition-colors"
+  const linkActive =
+    "text-primary after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:bg-primary"
+  const linkIdle =
+    "text-muted-foreground hover:text-primary"
 
   return (
-    <header className="border-b px-4 md:px-6">
-      <div className="flex h-16 items-center justify-between gap-4">
-        {/* Left side */}
-        <div className="flex items-center gap-2">
-          {/* Mobile menu trigger */}
-          <Popover>
+    <header
+      className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? "h-14 bg-background/80 shadow-md backdrop-blur-md"
+          : "h-16 bg-background/60 backdrop-blur-sm"
+      } border-b px-4 md:px-8`}
+    >
+      <div className="flex h-full items-center justify-between">
+        {/* Left: Logo + Nav */}
+        <div className="flex items-center gap-6">
+          {/* Mobile Menu */}
+          <Popover open={mobileOpen} onOpenChange={setMobileOpen}>
             <PopoverTrigger asChild>
               <Button
-                className="group size-8 md:hidden"
                 variant="ghost"
                 size="icon"
+                className="md:hidden"
+                aria-label="Open menu"
               >
                 <svg
-                  className="pointer-events-none"
                   width={20}
                   height={20}
                   viewBox="0 0 24 24"
@@ -70,25 +98,27 @@ export default function Navbar() {
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </Button>
             </PopoverTrigger>
-
-            <PopoverContent align="start" className="w-36 p-1 md:hidden">
+            <PopoverContent
+              align="start"
+              className="w-48 p-1 md:hidden bg-background/90 backdrop-blur-md border"
+            >
               <NavigationMenu className="max-w-none *:w-full">
-                <NavigationMenuList className="flex-col items-start gap-0 md:gap-2">
-                  {navigationLinks.map((link) => (
+                <NavigationMenuList className="flex-col items-start gap-0">
+                  {visibleLinks.map((link) => (
                     <NavigationMenuItem key={link.href} className="w-full">
                       <NavigationMenuLink asChild>
                         <Link
                           to={link.href}
-                          className={`block py-1.5 w-full ${
+                          onClick={() => setMobileOpen(false)}
+                          className={`block w-full py-2 ${
                             pathname === link.href
-                              ? "border-b-2 border-primary text-primary font-medium"
-                              : "text-muted-foreground hover:text-primary"
+                              ? `${linkBase} ${linkActive}`
+                              : `${linkBase} ${linkIdle}`
                           }`}
                         >
                           {link.label}
@@ -101,66 +131,53 @@ export default function Navbar() {
             </PopoverContent>
           </Popover>
 
-          {/* Desktop Nav */}
-          <div className="flex items-center gap-6">
-            <Link to="/" className="text-primary hover:text-primary/90">
-              <Logo />
-            </Link>
+          {/* Logo */}
+          <Link to="/" className="flex items-center gap-2">
+            <Logo/>
+          </Link>
 
-            <NavigationMenu className="max-md:hidden">
-              <NavigationMenuList className="gap-2">
-                {navigationLinks.map((link, index) => (
-                  <React.Fragment key={index}>
-                    {link.role === "PUBLIC" && (
-                      <NavigationMenuItem key={link.href}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to={link.href}
-                            className={`py-1.5 font-medium ${
-                              pathname === link.href
-                                ? "border-b-2 border-primary text-primary"
-                                : "text-muted-foreground hover:text-primary"
-                            }`}
-                          >
-                            {link.label}
-                          </Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    )}
-                    {link.role === role && (
-                      <NavigationMenuItem key={link.href}>
-                        <NavigationMenuLink asChild>
-                          <Link
-                            to={link.href}
-                            className={`py-1.5 font-medium ${
-                              pathname === link.href
-                                ? "border-b-2 border-primary text-primary"
-                                : "text-muted-foreground hover:text-primary"
-                            }`}
-                          >
-                            {link.label}
-                          </Link>
-                        </NavigationMenuLink>
-                      </NavigationMenuItem>
-                    )}
-                  </React.Fragment>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
+          {/* Desktop Nav */}
+          <NavigationMenu className="max-md:hidden">
+            <NavigationMenuList className="gap-6">
+              {visibleLinks.map((link) => (
+                <NavigationMenuItem key={link.href}>
+                  <NavigationMenuLink asChild>
+                    <Link
+                      to={link.href}
+                      className={`${linkBase} ${
+                        pathname === link.href ? linkActive : linkIdle
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+                  </NavigationMenuLink>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
         </div>
 
-        {/* Right side */}
-        <div className="flex items-center gap-2">
-          <Button type="button" className="bg-pink-500">{data?.data?.user?.role}</Button>
-          <ModeToggle/>
-          {phone && (
-            <Button onClick={handleLogout} variant="outline" className="text-sm">
+        {/* Right: Badge + Theme + Auth */}
+        <div className="flex items-center gap-3">
+          {role && (
+            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
+              {role}
+            </span>
+          )}
+          <ModeToggle />
+          {phone ? (
+            <Button
+              onClick={handleLogout}
+              variant="outline"
+              className="text-sm font-medium border-primary/40 hover:bg-primary/10"
+            >
               Logout
             </Button>
-          )}
-          {!phone && (
-            <Button asChild className="text-sm bg-amber-500 hover:bg-amber-600">
+          ) : (
+            <Button
+              asChild
+              className="text-sm font-semibold bg-primary hover:bg-primary/90 px-5"
+            >
               <Link to="/login">Login</Link>
             </Button>
           )}
