@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 import PasswordInput from "@/components/ui/PasswordInput"
 import { useRegisterMutation } from "@/redux/features/auth/auth.api"
 import {toast} from "sonner"
@@ -44,6 +44,8 @@ const registerSchema = z.object({
 
 export default function Register() {
   const [register] = useRegisterMutation()
+  const navigate = useNavigate()
+  
   const form = useForm<z.infer<typeof registerSchema>>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -69,6 +71,7 @@ export default function Register() {
       const result = await register(userInfo).unwrap();
       console.log(result)
       toast.success("User created successfully")
+      navigate("/login")
     }catch(error){
       console.log(error)
     }
