@@ -24,8 +24,45 @@ export const adminApi = baseApi.injectEndpoints({
                 url: "admin/wallets",
                 method: "GET",
             }),
-        })
+        }),
+        blockWallet: builder.mutation({
+            query: (walletId: string) => ({
+                url: `admin/wallet/block/${walletId}`,
+                method: "PATCH",
+            }),
+        }),
+        activekWallet: builder.mutation({
+            query: (walletId: string) => ({
+                url: `admin/wallet/active/${walletId}`,
+                method: "PATCH",
+            }),
+        }),
+        suspandAgent: builder.mutation({
+            query: (agetId: string) => ({
+                url: `admin/agents/suspend/${agetId}`,
+                method: "PATCH",
+            }),
+        }),
+        approveAgent: builder.mutation({
+            query: (agetId: string) => ({
+                url: `admin/agents/approved/${agetId}`,
+                method: "PATCH",
+            }),
+        }),
+        updateAdmin: builder.mutation({
+        query: (updateInfo: { name?: string; phone?: string; password?: string ; email?:string}) => ({
+            url: "admin/update",
+            method: "PATCH",
+            data: updateInfo, // ✅ since you use Axios
+        }),
+        }),
+        getAdmin: builder.query({
+            query: () => ({
+                url: "admin/me",
+                method: "GET",
+            }),
+        }),
     })
 })
 
-export const {useGetUsersQuery, useGetAgentsQuery, useGetTransactionsQuery, useGetWalletsQuery}= adminApi;
+export const {useGetUsersQuery, useGetAgentsQuery, useGetTransactionsQuery, useGetWalletsQuery, useBlockWalletMutation, useActivekWalletMutation, useSuspandAgentMutation, useApproveAgentMutation, useUpdateAdminMutation, useGetAdminQuery}= adminApi;
