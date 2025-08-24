@@ -5,9 +5,11 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar";
-import { Outlet } from "react-router";
+import { Outlet, useLocation } from "react-router";
 
 export default function Dashboard() {
+  const location = useLocation()
+  // console.log(location)
   return (
     <SidebarProvider>
       <AppSidebar />
@@ -18,6 +20,7 @@ export default function Dashboard() {
             orientation="vertical"
             className="mr-2 data-[orientation=vertical]:h-4"
           />
+          <h1>{location?.pathname}</h1>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">
           <Outlet />
