@@ -22,7 +22,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const location = useLocation()
   const {data: userData} = useUserInfoQuery(undefined)
   const role = userData?.data?.user?.role
-  console.log(userData?.data?.user?.role)
+  // console.log(userData?.data?.user?.role)
   
   const data = {
     navMain: getSidebarItems(role)
@@ -40,12 +40,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
-            <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-2xl mb-4 mx-auto">{item.title}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton asChild  className="hover:bg-pink-500 hover:text-white">
                       <Link to={item.url}
                       className={
                         location.pathname ===item.url ? 

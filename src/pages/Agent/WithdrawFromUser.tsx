@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Phone, DollarSign, Send } from "lucide-react"
-import { useCashInToUserMutation } from "@/redux/features/agent/agent.api"
+import { useCashOutFromUserMutation } from "@/redux/features/agent/agent.api"
 
 // Define validation schema
 const formSchema = z.object({
@@ -27,9 +27,9 @@ const formSchema = z.object({
     .min(1, { message: "Amount must be at least 1." }),
 })
 
-export function CashInToUser() {
+export function WithdrawFromUser() {
 
-  const [cashInToUser] = useCashInToUserMutation()
+  const [cashOutFromUser] = useCashOutFromUserMutation()
   console.log()
   
   const form = useForm<z.infer<typeof formSchema>>({
@@ -41,21 +41,21 @@ export function CashInToUser() {
   })
 
   const onSubmit = async(data: z.infer<typeof formSchema>)=>{
-    console.log("Send Money Payload:", data)
+    console.log("cashout Money Payload:", data)
 
-    const cashInInfo = {
+    const cashOutInfo = {
       userPhone : data.phone,
       amount: data.amount
     }
 
-    const result = await cashInToUser(cashInInfo).unwrap()
+    const result = await cashOutFromUser(cashOutInfo).unwrap()
     console.log(result)
 
   }
 
   return (
     <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-3xl font-bold mb-6">Cash-In to User</h1>
+      <h1 className="text-3xl font-bold mb-6">Cash-Out from User</h1>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -110,7 +110,7 @@ export function CashInToUser() {
           {/* Submit button */}
           <Button type="submit" className="w-full flex items-center gap-2">
             <Send className="h-4 w-4" />
-            Cash-In to User
+            Cash-Out from User
           </Button>
         </form>
       </Form>
