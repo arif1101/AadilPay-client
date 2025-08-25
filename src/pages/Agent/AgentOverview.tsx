@@ -21,7 +21,7 @@ export default function AgentDashboard() {
   const { data: profile } = useUserInfoQuery(undefined)
   const { data: txData } = useTransactionQuery(undefined)
 
-  const user = profile?.data?.user
+  // const user = profile?.data?.user
   const wallet = profile?.data?.wallet
   const transactions = txData?.data ?? []
 
