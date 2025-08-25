@@ -6,12 +6,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Separator } from "@/components/ui/separator"
+import UpdateAdminModal from "@/components/user/UpdateAdminModal"
+import { Link } from "react-router"
 
 export default function UserProfile() {
   const { data: userProfile } = useUserInfoQuery(undefined)
   const user = userProfile?.data?.user
   const wallet = userProfile?.data?.wallet
-
+  
   if (!user) {
     return (
       <div className="flex items-center justify-center h-[80vh]">
@@ -32,11 +34,21 @@ export default function UserProfile() {
               </AvatarFallback>
             </Avatar>
             <div>
-              <CardTitle className="text-2xl font-semibold">{user.name}</CardTitle>
-              <p className="text-muted-foreground text-sm">{user.phone}</p>
-              <Badge variant="secondary" className="mt-2">
+              <div className="flex gap-4">
+                <CardTitle className="text-2xl font-semibold">{user.name}</CardTitle>
+                <Badge variant="secondary" className="mt-2 text-green-500">
                 {user.role}
               </Badge>
+              </div>
+              <p className="text-muted-foreground text-sm  text-left">{user.phone}</p>
+              {
+                user?.email && (
+                  <p className="text-muted-foreground text-sm  text-left">{user.email}</p>
+                )
+              }
+              <p className="text-xs text-muted-foreground text-left">
+                Joined: {new Date(user.createdAt).toLocaleDateString()}
+              </p>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -53,9 +65,7 @@ export default function UserProfile() {
               <Badge variant="outline">{user.status}</Badge>
             </div>
             <Separator />
-            <p className="text-xs text-muted-foreground">
-              Joined: {new Date(user.createdAt).toLocaleDateString()}
-            </p>
+            <UpdateAdminModal user={user} />
           </CardContent>
         </Card>
 
@@ -81,8 +91,8 @@ export default function UserProfile() {
             </div>
             <Separator />
             <div className="flex justify-end gap-3">
-              <Button variant="outline">View Transactions</Button>
-              <Button className="bg-primary text-white">Send Money</Button>
+              <Button variant="outline"><Link to={"/user/transactions"}>View Transactions</Link></Button>
+              <Button className="text-white bg-orange-500 hover:bg-orange-600"><Link to={"/user/send-money"}>Send Money</Link></Button>
             </div>
           </CardContent>
         </Card>

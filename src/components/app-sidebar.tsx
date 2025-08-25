@@ -45,13 +45,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild  className="hover:bg-pink-500 hover:text-white">
+                    <SidebarMenuButton asChild  className="hover:bg-orange-500 hover:text-white">
                       <Link to={item.url}
                       className={
                         location.pathname ===item.url ? 
-                        "bg-pink-500 text-white rounded-md px-3 py-2 transition hover:bg-pink-600"
+                        "bg-orange-500 text-white rounded-md px-3 py-2 transition hover:bg-orange-600"
                         : 
-                        "hover:bg-pink-100 rounded-md px-3 py-2 transition"
+                        "hover:bg-orange-100 rounded-md px-3 py-2 transition"
                       }
                       >{item.title}</Link>
                     </SidebarMenuButton>
