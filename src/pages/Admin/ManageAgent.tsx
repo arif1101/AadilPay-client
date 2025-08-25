@@ -63,16 +63,16 @@ export default function ManageAgent() {
           <TableBody>
             {agentData?.data?.map((agent: any) => (
               <TableRow key={agent._id}>
-                <TableCell className="font-medium">{agent.name}</TableCell>
-                <TableCell>{agent.phone}</TableCell>
-                <TableCell>
+                <TableCell className="font-medium text-left">{agent.name}</TableCell>
+                <TableCell className="text-left">{agent.phone}</TableCell>
+                <TableCell className="text-left">
                   {agent.accountStatus === "APPROVED" ? (
                     <Badge variant="default">Approved</Badge>
                   ) : (
                     <Badge variant="destructive">Suspended</Badge>
                   )}
                 </TableCell>
-                <TableCell>{agent.commissionRate}%</TableCell>
+                <TableCell className="text-left">{agent.commissionRate}%</TableCell>
                 <TableCell className="text-center space-x-2">
                   {agent.accountStatus === "APPROVED" ? (
                     <Button
@@ -92,6 +92,7 @@ export default function ManageAgent() {
                     </Button>
                   ) : (
                     <Button
+                    className="bg-green-500 text-black hover:bg-green-500"
                       variant="default"
                       size="sm"
                       onClick={() => handleApprove(agent._id)}
