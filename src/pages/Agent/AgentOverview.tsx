@@ -35,40 +35,47 @@ export default function AgentDashboard() {
     .reduce((sum: number, t: any) => sum + t.amount, 0)
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white p-8 space-y-8">
       {/* Header */}
-      <h1 className="text-2xl font-bold">Agent Dashboard</h1>
+      <header className="text-center">
+        <h1 className="text-3xl font-extrabold tracking-tight text-orange-600">
+          Agent Dashboard
+        </h1>
+        <p className="text-muted-foreground text-sm">
+          Manage your wallet, cash in/out, and track transactions
+        </p>
+      </header>
 
       {/* Overview Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <Card>
+        <Card className="hover:shadow-lg transition">
           <CardHeader>
-            <CardTitle>Wallet Balance</CardTitle>
+            <CardTitle className="text-lg">Wallet Balance</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold">
+            <p className="text-3xl font-bold text-orange-600">
               ৳ {wallet?.balance ?? 0}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-lg transition">
           <CardHeader>
-            <CardTitle>Cash In</CardTitle>
+            <CardTitle className="text-lg">Cash In</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold text-green-600">
+            <p className="text-3xl font-bold text-green-600">
               ৳ {cashIn}
             </p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="hover:shadow-lg transition">
           <CardHeader>
-            <CardTitle>Cash Out</CardTitle>
+            <CardTitle className="text-lg">Cash Out</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-semibold text-red-600">
+            <p className="text-3xl font-bold text-red-600">
               ৳ {cashOut}
             </p>
           </CardContent>
@@ -76,59 +83,62 @@ export default function AgentDashboard() {
       </div>
 
       {/* Recent Transactions */}
-      <Card>
+      <Card className="shadow-md">
         <CardHeader>
-          <CardTitle>Recent Transactions</CardTitle>
+          <CardTitle className="text-xl">Recent Transactions</CardTitle>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Receiver</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Amount</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {transactions.length > 0 ? (
-                transactions.slice(0, 5).map((tx: any) => (
-                  <TableRow key={tx._id}>
-                    <TableCell>{tx.user?.name ?? "N/A"}</TableCell>
-                    <TableCell>{tx.receiver?.name ?? "N/A"}</TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          tx.type === "CASH_IN" ? "default" : "destructive"
-                        }
-                      >
-                        {tx.type}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge
-                        variant={
-                          tx.status === "success" ? "outline" : "secondary"
-                        }
-                      >
-                        {tx.status}
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      ৳ {tx.amount}
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-orange-50">
+                  <TableHead>User</TableHead>
+                  <TableHead>Receiver</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Amount</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {transactions.length > 0 ? (
+                  transactions.slice(0, 5).map((tx: any, i: number) => (
+                    <TableRow
+                      key={tx._id}
+                      className={i % 2 === 0 ? "bg-white" : "bg-orange-50/30"}
+                    >
+                      <TableCell>{tx.user?.name ?? "N/A"}</TableCell>
+                      <TableCell>{tx.receiver?.name ?? "N/A"}</TableCell>
+                      <TableCell>
+                        <Badge
+                          className="capitalize"
+                          variant={tx.type === "CASH_IN" ? "default" : "destructive"}
+                        >
+                          {tx.type.replace("_", " ")}
+                        </Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge
+                          className="capitalize border-orange-500 text-orange-600"
+                          variant={tx.status === "success" ? "outline" : "secondary"}
+                        >
+                          {tx.status}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-right font-semibold">
+                        ৳ {tx.amount}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center py-6 text-muted-foreground">
+                      No transactions found
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={5} className="text-center">
-                    No transactions found
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
+                )}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>

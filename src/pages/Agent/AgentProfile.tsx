@@ -37,7 +37,6 @@ const passwordSchema = z
   })
 
 export default function AgentProfile() {
-
   const { data: agentInfo } = useUserInfoQuery(undefined)
   const user = agentInfo?.data?.user
   const wallet = agentInfo?.data?.wallet
@@ -53,11 +52,17 @@ export default function AgentProfile() {
   })
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Agent Profile</h1>
+    <div className="p-8 w-full mx-auto space-y-8">
+      {/* Header */}
+      <div>
+        <h1 className="text-3xl font-bold text-orange-600">Agent Profile</h1>
+        <p className="text-muted-foreground mt-1">
+          Manage your personal details, wallet, and security settings.
+        </p>
+      </div>
 
       <Tabs defaultValue="profile" className="w-full">
-        <TabsList className="grid grid-cols-3 w-[400px]">
+        <TabsList className="grid grid-cols-3 w-full rounded-xl">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="update">Update Info</TabsTrigger>
           <TabsTrigger value="password">Change Password</TabsTrigger>
@@ -65,41 +70,41 @@ export default function AgentProfile() {
 
         {/* Profile Info */}
         <TabsContent value="profile">
-          <Card className="shadow-md rounded-2xl">
+          <Card className="shadow-md hover:shadow-lg transition rounded-2xl">
             <CardHeader>
-              <CardTitle>Profile Overview</CardTitle>
+              <CardTitle className="text-xl">Profile Overview</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-6">
               {/* Basic Info */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="flex items-center gap-2">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="flex items-center gap-3">
                   <User className="h-5 w-5 text-blue-500" />
                   <p>
                     <strong>Name:</strong> {user?.name}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <Smartphone className="h-5 w-5 text-green-500" />
                   <p>
                     <strong>Phone:</strong> {user?.phone}
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <ShieldCheck className="h-5 w-5 text-purple-500" />
                   <p>
-                    <strong>Account Status:</strong>{" "}
+                    <strong>Status:</strong>{" "}
                     <Badge
-                      variant={
+                      className={
                         user?.accountStatus === "APPROVED"
-                          ? "default"
-                          : "destructive"
+                          ? "bg-orange-100 text-orange-700"
+                          : "bg-red-100 text-red-700"
                       }
                     >
                       {user?.accountStatus}
                     </Badge>
                   </p>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <ShieldCheck className="h-5 w-5 text-orange-500" />
                   <p>
                     <strong>Role:</strong> {user?.role}
@@ -108,15 +113,17 @@ export default function AgentProfile() {
               </div>
 
               {/* Wallet Info */}
-              <div className="mt-4 p-4 border rounded-lg bg-gray-50 flex items-center gap-3">
+              <div className="p-5 border rounded-2xl bg-orange-50 flex items-center gap-4">
                 <Wallet className="h-6 w-6 text-emerald-600" />
                 <div>
-                  <p className="text-lg font-semibold">
+                  <p className="text-lg font-semibold text-orange-700">
                     Wallet Balance: {wallet?.balance} BDT
                   </p>
                   <Badge
-                    variant={
-                      wallet?.status === "ACTIVE" ? "outline" : "destructive"
+                    className={
+                      wallet?.status === "ACTIVE"
+                        ? "bg-green-100 text-green-700"
+                        : "bg-red-100 text-red-700"
                     }
                   >
                     {wallet?.status}
@@ -129,9 +136,9 @@ export default function AgentProfile() {
 
         {/* Update Profile */}
         <TabsContent value="update">
-          <Card>
+          <Card className="shadow-md rounded-2xl">
             <CardHeader>
-              <CardTitle>Update Personal Info</CardTitle>
+              <CardTitle className="text-xl">Update Personal Info</CardTitle>
             </CardHeader>
             <CardContent>
               <Form {...infoForm}>
@@ -167,7 +174,12 @@ export default function AgentProfile() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit">Save Changes</Button>
+                  <Button
+                    type="submit"
+                    className="bg-orange-500 hover:bg-orange-600"
+                  >
+                    Save Changes
+                  </Button>
                 </form>
               </Form>
             </CardContent>
@@ -176,9 +188,9 @@ export default function AgentProfile() {
 
         {/* Change Password */}
         <TabsContent value="password">
-          <Card>
+          <Card className="shadow-md rounded-2xl">
             <CardHeader>
-              <CardTitle>Change Password</CardTitle>
+              <CardTitle className="text-xl">Change Password</CardTitle>
             </CardHeader>
             <CardContent>
               <Form {...passForm}>
@@ -227,7 +239,12 @@ export default function AgentProfile() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit">Update Password</Button>
+                  <Button
+                    type="submit"
+                    className="bg-orange-500 hover:bg-orange-600"
+                  >
+                    Update Password
+                  </Button>
                 </form>
               </Form>
             </CardContent>
