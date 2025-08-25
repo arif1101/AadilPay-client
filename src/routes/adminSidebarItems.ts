@@ -7,7 +7,7 @@ import AdminProfile from "@/pages/Admin/AdminProfile";
 
 export const adminSidebarItems: ISidebarItem[] = [
     {
-        title: "Dashboard",
+        title: "Admin Dashboard",
         items: [
             {
                 title: "Overview",

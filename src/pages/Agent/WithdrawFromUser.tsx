@@ -137,7 +137,7 @@ export function WithdrawFromUser() {
 
         {/* Right: FAQ Section */}
         <div className="w-full lg:w-[40%] bg-white shadow-md px-6 py-5 rounded-2xl border border-orange-100">
-          <h2 className="text-2xl font-semibold mb-4 text-orange-600">
+          <h2 className="text-2xl font-semibold mb-4">
             Frequently Asked Questions
           </h2>
           <Accordion type="single" collapsible className="w-full space-y-2">
@@ -151,7 +151,7 @@ export function WithdrawFromUser() {
             </AccordionItem>
 
             <AccordionItem value="q2" className="border-b border-orange-100">
-              <AccordionTrigger className="hover:text-orange-600 transition-colors">
+              <AccordionTrigger className="text-orange-600 font-medium">
                 How long does it take to process?
               </AccordionTrigger>
               <AccordionContent>
@@ -161,7 +161,7 @@ export function WithdrawFromUser() {
             </AccordionItem>
 
             <AccordionItem value="q3" className="border-b border-orange-100">
-              <AccordionTrigger className="hover:text-orange-600 transition-colors">
+              <AccordionTrigger className="text-orange-600 font-medium">
                 Are there any fees?
               </AccordionTrigger>
               <AccordionContent>

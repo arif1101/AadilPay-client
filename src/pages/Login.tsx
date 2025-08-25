@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
@@ -52,8 +53,9 @@ export default function LoginCard() {
       console.log(result)
       toast.success("Loged In")
       navigate("/")
-    }catch(error){
-      console.log(error)
+    }catch(error: any){
+      const errorMessage = error?.data?.message || "Something went wrong"
+      toast.error(errorMessage)
     }
   }
 

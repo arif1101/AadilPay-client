@@ -141,7 +141,7 @@ export function CashInToUser() {
 
         {/* FAQ Section */}
         <div className="w-full lg:w-[40%] bg-gray-50 shadow-sm px-6 py-6 rounded-2xl border border-gray-100">
-          <h2 className="text-2xl font-semibold mb-4 text-gray-800">FAQ</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Frequently Asked Questions</h2>
           <Accordion type="single" collapsible className="w-full">
             <AccordionItem value="q1">
               <AccordionTrigger className="text-orange-600 font-medium">
