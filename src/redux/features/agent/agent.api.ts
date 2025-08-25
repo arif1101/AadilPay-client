@@ -6,14 +6,16 @@ export const agentApi = baseApi.injectEndpoints({
                 url: "/agents/cash-in",
                 method: "POST",
                 data: cashInInfo
-            })
+            }),
+            invalidatesTags: ["USER"]
         }),
         cashOutFromUser: builder.mutation({
             query: (cashOutInfo) => ({
-                url: "/agents/cash-in",
+                url: "/agents/cash-out",
                 method: "POST",
                 data: cashOutInfo
-            })
+            }),
+            invalidatesTags: ["USER"]
         }),
         agentTransactions: builder.query({
             query: () => ({
