@@ -24,16 +24,18 @@ import {
   PaginationPrevious,
   PaginationNext,
 } from "@/components/ui/pagination"
+import { toast } from "sonner"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function ManageUsers() {
-  const { data: usersData, refetch } = useGetUsersQuery(undefined)
+  const { data: usersData,isLoading , refetch } = useGetUsersQuery(undefined)
   const [blockWallet] = useBlockWalletMutation()
   const [activeWallet] = useActivekWalletMutation()
   const [selectedUser, setSelectedUser] = useState<any>(null)
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 1
+  const itemsPerPage = 5
 
   const totalUsers = usersData?.data?.length || 0
   const totalPages = Math.ceil(totalUsers / itemsPerPage)
@@ -46,20 +48,22 @@ export default function ManageUsers() {
   const handleBlock = async (walletId: string) => {
     try {
       await blockWallet(walletId).unwrap()
-      alert("Wallet blocked ✅")
+      toast.success("User blocked successfully")
       refetch()
     } catch (err) {
       console.error(err)
+      toast.error("something wrong")
     }
   }
 
   const handleActive = async (walletId: string) => {
     try {
       await activeWallet(walletId).unwrap()
-      alert("Wallet activated ✅")
+      toast.success("User Active successfully")
       refetch()
     } catch (err) {
       console.error(err)
+      toast.error("something wrong")
     }
   }
 
@@ -70,7 +74,31 @@ export default function ManageUsers() {
       </h1>
 
       <div className="grid gap-4">
-        {paginatedUsers?.map((user: any) => (
+        {isLoading ? (
+          Array.from({ length: 5 }).map((_, i) => (
+            <div
+              key={i}
+              className="flex justify-between items-center p-4 bg-white border rounded-xl shadow-sm"
+            >
+              <div className="flex items-center gap-3">
+                {/* Avatar */}
+                <Skeleton className="h-10 w-10 rounded-full" />
+
+                {/* Name + Email */}
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-6 w-16 rounded-full" />
+                <Skeleton className="h-8 w-20 rounded-md" />
+              </div>
+            </div>
+          ))
+        ) : (
+          paginatedUsers?.map((user: any) => (
           <div
             key={user._id}
             className="flex justify-between items-center p-4 bg-white border rounded-xl shadow-sm hover:shadow-md transition"
@@ -182,7 +210,9 @@ export default function ManageUsers() {
               </Dialog>
             </div>
           </div>
-        ))}
+        ))
+        )
+        }
       </div>
 
       {/* Pagination */}
@@ -197,16 +227,28 @@ export default function ManageUsers() {
                 />
               </PaginationItem>
 
-              {Array.from({ length: totalPages }, (_, i) => (
-                <PaginationItem key={i}>
-                  <PaginationLink
-                    isActive={currentPage === i + 1}
-                    onClick={() => setCurrentPage(i + 1)}
-                  >
-                    {i + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
+        {/* Sliding window */}
+        {(() => {
+          const windowSize = Math.min(3, totalPages); // show up to 3 pages
+          const startPage = Math.max(
+            1,
+            Math.min(currentPage, totalPages - windowSize + 1) // start at current, clamp to end
+          );
+
+          return Array.from({ length: windowSize }, (_, i) => {
+            const page = startPage + i;
+            return (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  isActive={currentPage === page}
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          });
+        })()}
 
               <PaginationItem>
                 <PaginationNext

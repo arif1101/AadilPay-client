@@ -24,30 +24,35 @@ export const adminApi = baseApi.injectEndpoints({
                 url: "admin/wallets",
                 method: "GET",
             }),
+            providesTags: ["WALLET"]
         }),
         blockWallet: builder.mutation({
             query: (walletId: string) => ({
                 url: `admin/wallet/block/${walletId}`,
                 method: "PATCH",
             }),
+            invalidatesTags: ["WALLET"]
         }),
         activekWallet: builder.mutation({
             query: (walletId: string) => ({
                 url: `admin/wallet/active/${walletId}`,
                 method: "PATCH",
             }),
+            invalidatesTags: ["WALLET"]
         }),
         suspandAgent: builder.mutation({
             query: (agetId: string) => ({
                 url: `admin/agents/suspend/${agetId}`,
                 method: "PATCH",
             }),
+            invalidatesTags: ["USER"]
         }),
         approveAgent: builder.mutation({
             query: (agetId: string) => ({
                 url: `admin/agents/approved/${agetId}`,
                 method: "PATCH",
             }),
+            invalidatesTags: ["USER"]
         }),
         updateAdmin: builder.mutation({
         query: (updateInfo: { name?: string; phone?: string; password?: string ; email?:string}) => ({

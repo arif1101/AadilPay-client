@@ -3,12 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Users, UserCheck, ArrowRightLeft, CircleDollarSign } from "lucide-react"
 import { useGetAgentsQuery, useGetTransactionsQuery, useGetUsersQuery, useGetWalletsQuery } from "@/redux/features/admin/admin.api"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function AdminOverview() {
-  const { data: usersData } = useGetUsersQuery(undefined)
-  const { data: agentsData } = useGetAgentsQuery(undefined)
-  const { data: txData } = useGetTransactionsQuery(undefined)
-  const { data: walletsData } = useGetWalletsQuery(undefined)
+  const { data: usersData, isLoading : userLoading } = useGetUsersQuery(undefined)
+  const { data: agentsData, isLoading : agentLoading } = useGetAgentsQuery(undefined)
+  const { data: txData, isLoading : txLoading } = useGetTransactionsQuery(undefined)
+  const { data: walletsData , isLoading : walletLoading} = useGetWalletsQuery(undefined)
 
   // ✅ derive stats
   const totalUsers = usersData?.data?.length || 0
@@ -28,9 +29,16 @@ export default function AdminOverview() {
         <CardTitle className="text-gray-800">Total Wallet Balance</CardTitle>
         <CircleDollarSign className="h-6 w-6 text-orange-500" />
       </CardHeader>
-      <CardContent>
-        <p className="text-3xl font-bold text-gray-900">{totalWalletBalance} BDT</p>
-      </CardContent>
+      {walletLoading ? (
+        <Skeleton className="h-8 w-32 rounded-md mx-auto">loading..</Skeleton>
+      ) : (
+        <CardContent>
+          <p className="text-3xl font-bold text-gray-900">{totalWalletBalance} BDT</p>
+        </CardContent>
+      )
+
+      }
+
     </Card>
 
     <Card className="shadow-md rounded-2xl bg-white">
@@ -38,9 +46,15 @@ export default function AdminOverview() {
         <CardTitle className="text-gray-800">Total Transaction Volume</CardTitle>
         <ArrowRightLeft className="h-6 w-6 text-orange-500" />
       </CardHeader>
-      <CardContent>
-        <p className="text-3xl font-bold text-gray-900">{totalVolume} BDT</p>
-      </CardContent>
+      {walletLoading ? (
+        <Skeleton className="h-8 w-32 rounded-md mx-auto">loading..</Skeleton>
+        ) : (
+        <CardContent>
+          <p className="text-3xl font-bold text-gray-900">{totalVolume} BDT</p>
+        </CardContent>
+        )
+      }
+
     </Card>
   </div>
 

@@ -5,7 +5,7 @@ import { ShieldCheck, Wallet } from "lucide-react"
 
 export default function AboutPage() {
   return (
-    <div className="bg-gradient-to-b from-pink-50 to-white dark:from-gray-900 dark:to-gray-950">
+    <div className="bg-gradient-to-b from-orange-50 to-white dark:from-gray-900 dark:to-gray-950">
       
       {/* Hero Section */}
       <section className="max-w-6xl mx-auto px-6 py-20 text-center">
@@ -15,7 +15,7 @@ export default function AboutPage() {
           transition={{ duration: 0.8 }}
           className="text-5xl font-bold mb-4 text-gray-900 dark:text-white"
         >
-          About <span className="text-pink-600">Smart Wallet</span>
+          About <span className="text-orange-600">Smart Wallet</span>
         </motion.h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Empowering millions with secure, fast, and reliable digital transactions.  
@@ -29,12 +29,12 @@ export default function AboutPage() {
           {
             title: "Our Mission",
             desc: "To make digital payments seamless, inclusive, and accessible to everyone in Bangladesh.",
-            icon: <Wallet className="w-10 h-10 text-pink-600" />,
+            icon: <Wallet className="w-10 h-10 text-orange-600" />,
           },
           {
             title: "Our Vision",
             desc: "To build a cashless society where every transaction is just one tap away.",
-            icon: <ShieldCheck className="w-10 h-10 text-pink-600" />,
+            icon: <ShieldCheck className="w-10 h-10 text-orange-600" />,
           },
         ].map((item, i) => (
           <motion.div
@@ -54,7 +54,7 @@ export default function AboutPage() {
       </section>
 
       {/* Stats Section */}
-      <section className="bg-pink-600 text-white py-16 mt-10">
+      <section className="bg-orange-600 text-white py-16 mt-10">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 text-center gap-6">
           <div>
             <h3 className="text-4xl font-bold">1M+</h3>
@@ -74,7 +74,7 @@ export default function AboutPage() {
       {/* Call to Action */}
       <section className="text-center py-20">
         <h2 className="text-3xl font-bold mb-6">Ready to experience the future of payments?</h2>
-        <Button size="lg" className="bg-pink-600 hover:bg-pink-700 text-white">
+        <Button size="lg" className="bg-orange-600 hover:bg-orange-700 text-white">
           Get Started
         </Button>
       </section>

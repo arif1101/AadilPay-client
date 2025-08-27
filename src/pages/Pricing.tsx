@@ -19,7 +19,7 @@ export default function Pricing() {
         </p>
 
         <a
-          className="mt-6 block rounded-lg border border-pink-600 bg-pink-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-transparent hover:text-pink-600 transition"
+          className="mt-6 block rounded-lg border border-orange-600 bg-orange-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-transparent hover:text-orange-600 transition"
           href="#"
         >
           Get Started
@@ -39,8 +39,8 @@ export default function Pricing() {
     </div>
 
     {/* Smart Wallet (Popular) */}
-    <div className="relative divide-y divide-gray-200 rounded-2xl border-2 border-pink-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition duration-300">
-      <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-pink-600 text-white px-3 py-1 text-xs rounded-full">
+    <div className="relative divide-y divide-gray-200 rounded-2xl border-2 border-orange-600 shadow-lg hover:shadow-2xl transform hover:scale-105 transition duration-300">
+      <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-3 py-1 text-xs rounded-full">
         Most Popular
       </span>
 
@@ -58,7 +58,7 @@ export default function Pricing() {
         </p>
 
         <a
-          className="mt-6 block rounded-lg border border-pink-600 bg-pink-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-transparent hover:text-pink-600 transition"
+          className="mt-6 block rounded-lg border border-orange-600 bg-orange-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-transparent hover:text-orange-600 transition"
           href="#"
         >
           Get Started
@@ -93,7 +93,7 @@ export default function Pricing() {
         </p>
 
         <a
-          className="mt-6 block rounded-lg border border-pink-600 bg-pink-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-transparent hover:text-pink-600 transition"
+          className="mt-6 block rounded-lg border border-orange-600 bg-orange-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-transparent hover:text-orange-600 transition"
           href="#"
         >
           Get Started

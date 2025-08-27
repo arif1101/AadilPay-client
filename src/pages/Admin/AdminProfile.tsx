@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Link } from "react-router"
+import { Link, useNavigate } from "react-router"
 
 type FormValues = {
   name: string
@@ -23,6 +23,7 @@ type FormValues = {
 }
 
 export default function AdminProfile() {
+  const navigate= useNavigate()
   const { data: adminInfo, isLoading, isError, refetch } = useGetAdminQuery(undefined)
   const [updateAdmin, { isLoading: isUpdating }] = useUpdateAdminMutation()
 
@@ -93,25 +94,27 @@ export default function AdminProfile() {
 
   if (isError) {
     return (
-      <div className="max-w-4xl mx-auto p-8">
-        <Card className="rounded-2xl shadow-md border-red-300">
-          <CardHeader>
-            <CardTitle className="text-red-600">Admin Profile</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-red-500">Failed to load admin info.</p>
-            <h1 className="text-xl font-semibold text-red-600">
-              Changed number. Please login again.
-            </h1>
-            <Link
-              to="/login"
-              className="inline-block mt-3 text-orange-600 hover:underline"
-            >
-              Retry
-            </Link>
-          </CardContent>
-        </Card>
-      </div>
+      toast.success("login again"),
+      navigate("/login")
+      // <div className="max-w-4xl mx-auto p-8">
+      //   <Card className="rounded-2xl shadow-md border-red-300">
+      //     <CardHeader>
+      //       <CardTitle className="text-red-600">Admin Profile</CardTitle>
+      //     </CardHeader>
+      //     <CardContent>
+      //       <p className="text-sm text-red-500">Failed to load admin info.</p>
+      //       <h1 className="text-xl font-semibold text-red-600">
+      //         Changed number. Please login again.
+      //       </h1>
+      //       <Link
+      //         to="/login"
+      //         className="inline-block mt-3 text-orange-600 hover:underline"
+      //       >
+      //         Retry
+      //       </Link>
+      //     </CardContent>
+      //   </Card>
+      // </div>
     )
   }
 

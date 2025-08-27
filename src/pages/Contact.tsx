@@ -8,7 +8,7 @@ import { Mail, Phone, MapPin } from "lucide-react"
 
 export default function Contact() {
   return (
-    <div className="bg-gradient-to-b from-pink-50 to-white dark:from-gray-900 dark:to-gray-950">
+    <div className="bg-gradient-to-b from-orange-50 to-white dark:from-gray-900 dark:to-gray-950">
       
       {/* Hero Section */}
       <section className="max-w-4xl mx-auto text-center py-16 px-6">
@@ -18,7 +18,7 @@ export default function Contact() {
           transition={{ duration: 0.7 }}
           className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white"
         >
-          Get in <span className="text-pink-600">Touch</span>
+          Get in <span className="text-orange-600">Touch</span>
         </motion.h1>
         <p className="mt-4 text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
           Have questions, feedback, or need support? We’d love to hear from you.  
@@ -40,7 +40,7 @@ export default function Contact() {
               <Input type="email" placeholder="Your Email" />
               <Input type="text" placeholder="Subject" />
               <Textarea placeholder="Your Message" className="min-h-[120px]" />
-              <Button className="w-full bg-pink-600 hover:bg-pink-700 text-white">
+              <Button className="w-full bg-orange-600 hover:bg-orange-700 text-white">
                 Send Message
               </Button>
             </CardContent>
@@ -56,17 +56,17 @@ export default function Contact() {
         >
           {[
             {
-              icon: <Phone className="w-6 h-6 text-pink-600" />,
+              icon: <Phone className="w-6 h-6 text-orange-600" />,
               title: "Phone",
               detail: "+880 1XXX-XXXXXX",
             },
             {
-              icon: <Mail className="w-6 h-6 text-pink-600" />,
+              icon: <Mail className="w-6 h-6 text-orange-600" />,
               title: "Email",
               detail: "support@smartwallet.com",
             },
             {
-              icon: <MapPin className="w-6 h-6 text-pink-600" />,
+              icon: <MapPin className="w-6 h-6 text-orange-600" />,
               title: "Office",
               detail: "Dhaka, Bangladesh",
             },

@@ -21,6 +21,7 @@ import {
 import { useAppDispatch } from "@/redux/hook"
 import { role as Role } from "@/constant/role"
 import { useEffect, useState } from "react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
 
 const navigationLinks = [
   { href: "/", label: "Home", role: "PUBLIC" },
@@ -29,9 +30,9 @@ const navigationLinks = [
   { href: "/about", label: "About", role: "PUBLIC" },
   { href: "/faq", label: "FAQ", role: "PUBLIC" },
   { href: "/contact", label: "Contact", role: "PUBLIC" },
-  { href: "/admin", label: "Dashboard", role: Role.Admin },
-  { href: "/agent", label: "Dashboard", role: Role.agent },
-  { href: "/user", label: "Dashboard", role: Role.user },
+  { href: "/admin/admin-overview", label: "Dashboard", role: Role.Admin },
+  { href: "/agent/overview", label: "Dashboard", role: Role.agent },
+  { href: "/user/overview", label: "Dashboard", role: Role.user },
 ]
 
 export default function Navbar() {
@@ -45,6 +46,7 @@ export default function Navbar() {
   const [logout] = useLogoutMutation()
   const phone = data?.data?.user?.phone
   const role = data?.data?.user?.role
+  console.log(data)
 
   const handleLogout = async () => {
     await logout(undefined)
@@ -70,7 +72,7 @@ export default function Navbar() {
     "text-muted-foreground hover:text-primary"
 
   return (
-    <header
+    <header id="nav-menu"
       className={`sticky top-0 z-50 transition-all duration-300 ${
         isScrolled
           ? "h-14 bg-background/80 shadow-md backdrop-blur-md"
@@ -120,6 +122,7 @@ export default function Navbar() {
                               ? `${linkBase} ${linkActive}`
                               : `${linkBase} ${linkIdle}`
                           }`}
+                          id={link.label === "Dashboard" ? "dashboard-link" : undefined}
                         >
                           {link.label}
                         </Link>
@@ -147,6 +150,17 @@ export default function Navbar() {
                       className={`${linkBase} ${
                         pathname === link.href ? linkActive : linkIdle
                       }`}
+                      id={
+                        link.label === "Dashboard"
+                          ? "dashboard-link"
+                          : link.label === "Pricing"
+                          ? "pricing"
+                          : link.label === "FAQ"
+                          ? "faq-link"
+                          : link.label === "Contact"
+                          ? "contact-link"
+                          : undefined
+                      }
                     >
                       {link.label}
                     </Link>
@@ -157,14 +171,40 @@ export default function Navbar() {
           </NavigationMenu>
         </div>
 
+
         {/* Right: Badge + Theme + Auth */}
         <div className="flex items-center gap-3">
+            <Tooltip>
+              <TooltipTrigger>
+                <p
+                  onClick={() => {
+                    localStorage.setItem("seenTour","restart")
+                    window.location.reload()
+                  }}
+                  className="bg-orange-500 hover:bg-orange-500 text-[14px] text-white px-4 py-1 rounded-2xl cursor-pointer"
+                >
+                  Tour Guide
+                </p>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>click for guid</p>
+              </TooltipContent>
+            </Tooltip>
           {role && (
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
               {role}
             </span>
           )}
-          <ModeToggle />
+          <div id="dashboard-cards">
+            <Tooltip>
+              <TooltipTrigger>
+                <ModeToggle/>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Switch between light and dark mode</p>
+              </TooltipContent>
+            </Tooltip>
+          </div>
           {phone ? (
             <Button
               onClick={handleLogout}
