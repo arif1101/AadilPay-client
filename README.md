@@ -1,189 +1,165 @@
-💳 AdilPay – Digital Wallet Frontend
 
-A secure, role-based digital wallet frontend application (similar to bKash or Nagad) built with React 19, Redux Toolkit, RTK Query, Tailwind CSS 4, and Radix UI.
 
-This project provides a user-friendly, responsive, and scalable wallet system that supports three different roles:
+---
 
-👤 User – Send/receive money, manage wallet, view transactions
+````markdown
+# 💳 AdilPay – Digital Wallet Frontend  
 
-🧑‍💼 Agent – Facilitate deposits, withdrawals, and commissions
+A **secure, role-based digital wallet frontend application** (similar to **bKash** or **Nagad**) built with **React 19, Redux Toolkit, RTK Query, Tailwind CSS 4, and Radix UI**.  
 
-👨‍💻 Admin – Manage users/agents, monitor transactions, configure system
+This project provides a **user-friendly, responsive, and scalable wallet system** that supports three different roles:  
 
-It consumes a backend API (can be mocked or implemented separately with Node.js/Express + MongoDB).
+- 👤 **User** – Send/receive money, manage wallet, view transactions  
+- 🧑‍💼 **Agent** – Facilitate deposits, withdrawals, and commissions  
+- 👨‍💻 **Admin** – Manage users/agents, monitor transactions, configure system  
 
-🚀 Features
-🌍 Public Landing Pages
+It consumes a backend API (can be mocked or implemented separately with Node.js/Express + MongoDB).  
 
-Responsive landing page with hero banner, sticky navbar, footer
+---
 
-About, Features, Contact, FAQ, Pricing pages
+## 🚀 Features  
 
-Smooth transitions, skeleton loading, accessible design
+### 🌍 Public Landing Pages  
+- Responsive landing page with hero banner, sticky navbar, footer  
+- About, Features, Contact, FAQ, Pricing pages  
+- Smooth transitions, skeleton loading, accessible design  
 
-🔐 Authentication
+### 🔐 Authentication  
+- JWT-based login & registration (User/Agent roles)  
+- Persistent authentication with refresh  
+- Role-based redirection  
+- Logout functionality  
 
-JWT-based login & registration (User/Agent roles)
+### 👤 User Dashboard  
+- Wallet balance overview  
+- Deposit, Withdraw, Send Money  
+- Transaction history with pagination & filtering  
+- Profile management  
 
-Persistent authentication with refresh
+### 🧑‍💼 Agent Dashboard  
+- Cash-in / Cash-out for users  
+- Commission tracking  
+- Transaction history  
+- Profile management  
 
-Role-based redirection
+### 👨‍💻 Admin Dashboard  
+- Manage users & agents (approve/block/suspend)  
+- System-wide transaction monitoring with advanced filters  
+- Dashboard with analytics (charts, cards, stats)  
+- Fee/limit configuration (optional)  
 
-Logout functionality
+### ⚙️ General Features  
+- Role-based navigation  
+- Form validations  
+- Pagination, filtering, search  
+- Toast notifications (**Sonner**)  
+- Guided tour (**React Joyride**)  
+- Light/Dark mode toggle  
+- Fully responsive UI  
 
-👤 User Dashboard
+---
 
-Wallet balance overview
+## 🛠️ Technology Stack  
 
-Deposit, Withdraw, Send Money
+### **Frontend**  
+- React 19 + React Router v7  
+- Redux Toolkit + RTK Query  
+- Tailwind CSS v4 + tailwind-merge  
+- Radix UI components + lucide-react icons  
+- Framer Motion (animations)  
+- React Hook Form + Zod (form validation)  
+- React Joyride (guided tour)  
+- Sonner (toast notifications)  
+- Next Themes (dark/light mode)  
 
-Transaction history with pagination + filtering
+### **Backend (separate project, not included here)**  
+- Node.js / Express  
+- MongoDB / Mongoose  
+- JWT + bcrypt (authentication)  
 
-Profile management
+### **Tooling**  
+- Bun (package manager & runtime)  
+- Vite 7 (bundler)  
+- TypeScript 5.8  
+- ESLint 9 + TypeScript ESLint  
 
-🧑‍💼 Agent Dashboard
+---
 
-Cash-in / Cash-out for users
+## ⚡ Getting Started  
 
-Commission tracking
+### 🔧 Prerequisites  
+- [Bun](https://bun.sh/) (preferred) or Node.js 20+  
+- Git  
 
-Transaction history
+---
 
-Profile management
+### 📥 Installation  
 
-👨‍💻 Admin Dashboard
+Clone the repo:  
 
-Manage users & agents (approve/block/suspend)
-
-System-wide transaction monitoring with advanced filters
-
-Dashboard with analytics (charts, cards, stats)
-
-Fee/limit configuration (optional)
-
-⚙️ General Features
-
-Role-based navigation
-
-Form validations
-
-Pagination, filtering, search
-
-Toast notifications (Sonner)
-
-Guided tour (React Joyride)
-
-Light/Dark mode toggle
-
-Fully responsive UI
-
-🛠️ Technology Stack
-Frontend
-
-React 19
- + React Router v7
-
-Redux Toolkit
- + RTK Query
-
-Tailwind CSS v4
- + tailwind-merge
-
-Radix UI
- components + lucide-react
- icons
-
-Framer Motion
- for animations
-
-React Hook Form
- + Zod
- for form validation
-
-React Joyride
- (guided tour)
-
-Sonner
- for toast notifications
-
-Next Themes
- for dark/light mode
-
-Backend (separate project, not included here)
-
-Node.js / Express
-
-MongoDB / Mongoose
-
-JWT + bcrypt for authentication
-
-Tooling
-
-Bun
- (package manager & runtime)
-
-Vite 7
- (bundler)
-
-TypeScript 5.8
-
-ESLint 9
- + TypeScript ESLint
-
-⚡ Getting Started
-🔧 Prerequisites
-
-Bun
- (preferred) or Node.js 20+
-
-Git
-
-📥 Installation
-
-Clone the repo:
-
+```bash
 git clone https://github.com/your-username/adilpay-client.git
 cd adilpay-client
-
+````
 
 Install dependencies (using bun):
 
+```bash
 bun install
+```
 
-▶️ Run Development Server
+---
+
+### ▶️ Run Development Server
+
+```bash
 bun run dev
-
+```
 
 App will be available at:
-👉 http://localhost:5173
+👉 [http://localhost:5173](http://localhost:5173)
 
-🏗️ Build for Production
+---
+
+### 🏗️ Build for Production
+
+```bash
 bun run build
-
+```
 
 Preview production build:
 
+```bash
 bun run preview
+```
 
-🔍 Linting
+---
+
+### 🔍 Linting
+
+```bash
 bun run lint
+```
 
-🌐 Deployment
+---
+
+## 🌐 Deployment
 
 You can deploy easily on:
 
-Vercel (recommended for frontend)
+* **Vercel** (recommended for frontend)
+* **Netlify**
+* **Cloudflare Pages**
 
-Netlify
+Once deployed, add your **Live URL** here:
 
-Cloudflare Pages
+👉 **Live Demo:** [https://adilpay.vercel.app](https://adilpay.vercel.app) *(replace after deployment)*
 
-Once deployed, add your Live URL here:
+---
 
-👉 Live Demo: https://adilpay.vercel.app
- (replace after deployment)
+## 📂 Project Structure
 
-📂 Project Structure
+```bash
 adilpay-client/
 ├── public/               # Static assets
 ├── src/
@@ -200,40 +176,54 @@ adilpay-client/
 ├── tsconfig.json
 ├── vite.config.ts
 └── README.md
+```
 
-📊 Roadmap
+---
 
- Setup React + Vite + Tailwind + Redux Toolkit
+## 📊 Roadmap
 
- Add authentication flow with JWT
+* [x] Setup React + Vite + Tailwind + Redux Toolkit
+* [x] Add authentication flow with JWT
+* [x] Role-based dashboards (User, Agent, Admin)
+* [ ] Integrate backend API
+* [ ] Add advanced filtering & search in transactions
+* [ ] Add data visualization (charts)
+* [ ] Deployment & CI/CD setup
 
- Role-based dashboards (User, Agent, Admin)
+---
 
- Integrate backend API
+## 🤝 Contributing
 
- Add advanced filtering & search in transactions
+1. Fork the project
 
- Add data visualization (charts)
+2. Create a feature branch:
 
- Deployment & CI/CD setup
+   ```bash
+   git checkout -b feature/your-feature
+   ```
 
-🤝 Contributing
+3. Commit changes:
 
-Fork the project
+   ```bash
+   git commit -m "Add some feature"
+   ```
 
-Create a feature branch (git checkout -b feature/your-feature)
+4. Push to branch:
 
-Commit changes (git commit -m 'Add some feature')
+   ```bash
+   git push origin feature/your-feature
+   ```
 
-Push to branch (git push origin feature/your-feature)
+5. Open a Pull Request
 
-Open a Pull Request
+---
 
-📜 License
+## 📜 License
 
-This project is licensed under the MIT License – see the LICENSE
- file for details.
+This project is licensed under the **MIT License** – see the [LICENSE](LICENSE) file for details.
 
-👨‍💻 Author
+---
 
-Built with ❤️ by Adil
+## 👨‍💻 Author
+
+Built with ❤️ by **Arif**
