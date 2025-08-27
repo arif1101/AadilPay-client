@@ -22,7 +22,7 @@ export default function Dashboard() {
           />
           <h1>{location?.pathname}</h1>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">
+        <div className="flex flex-1 flex-col gap-4 md:p-4">
           <Outlet />
         </div>
       </SidebarInset>

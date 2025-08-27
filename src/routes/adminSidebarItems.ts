@@ -1,9 +1,9 @@
 import AdminOverview from "@/pages/Admin/AdminOverview";
+import AdminProfile from "@/pages/Admin/AdminProfile";
 import AllTransactions from "@/pages/Admin/AllTransactions";
 import ManageAgent from "@/pages/Admin/ManageAgent";
 import ManageUsers from "@/pages/Admin/ManageUsers";
 import type { ISidebarItem } from "@/types";
-import AdminProfile from "@/pages/Admin/AdminProfile";
 
 export const adminSidebarItems: ISidebarItem[] = [
     {

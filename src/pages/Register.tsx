@@ -27,20 +27,35 @@ import { useRegisterMutation } from "@/redux/features/auth/auth.api"
 import {toast} from "sonner"
 
 // ✅ Validation schema
-const registerSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  phone: z
-    .string()
-    .min(10, "Phone number is too short")
-    .max(15, "Phone number is too long"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(8,{error: "Confirm password is too short"}),
-  role: z.string().min(1, "Please select a role"),
-})
-.refine((data) => data.password === data.confirmPassword, {
-  message: "Password do not match",
-  path: ["confirmPassword"],
-})
+const registerSchema = z
+  .object({
+    name: z.string().min(2, "Name must be at least 2 characters"),
+
+    phone: z
+      .string()
+      .min(10, "Phone number is too short")
+      .max(15, "Phone number is too long"),
+
+    password: z
+      .string()
+      .min(6, "Password must be at least 6 characters")
+      .regex(
+        /^(?=.*[A-Z])(?=.*[!@#$%^&*])/,
+        "Password must contain at least one uppercase letter and one special character"
+      ),
+
+    confirmPassword: z
+      .string()
+      .min(6, "Confirm password must be at least 6 characters"),
+
+    role: z.string().min(1, "Please select a role"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+
 
 export default function Register() {
   const [register] = useRegisterMutation()
@@ -72,16 +87,18 @@ export default function Register() {
       console.log(result)
       toast.success("User created successfully")
       navigate("/login")
-    }catch(error){
-      console.log(error)
+    }catch(err){
+      toast.error("user already exist")
+      console.log(err)
+      
     }
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-pink-50 via-white to-pink-100 p-4">
-      <Card className="w-full max-w-md shadow-xl border border-pink-100 rounded-2xl bg-white">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-50 via-white to-orange-100 p-4">
+      <Card className="w-full max-w-md shadow-xl border border-orange-100 rounded-2xl bg-white">
         <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-pink-400 bg-clip-text text-transparent">
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-400 bg-clip-text text-transparent">
             Create Account
           </CardTitle>
           <CardDescription className="text-gray-500">
@@ -105,7 +122,7 @@ export default function Register() {
                     <FormControl>
                       <Input
                         placeholder="John Doe"
-                        className="focus:ring-2 focus:ring-pink-400 focus:border-pink-400 rounded-xl"
+                        className="focus:ring-2 focus:ring-orange-400 focus:border-orange-400 rounded-xl"
                         {...field}
                       />
                     </FormControl>
@@ -124,7 +141,7 @@ export default function Register() {
                     <FormControl>
                       <Input
                         placeholder="+8801XXXXXXXXX"
-                        className="focus:ring-2 focus:ring-pink-400 focus:border-pink-400 rounded-xl"
+                        className="focus:ring-2 focus:ring-orange-400 focus:border-orange-400 rounded-xl"
                         {...field}
                       />
                     </FormControl>
@@ -172,7 +189,7 @@ export default function Register() {
                     <FormLabel className="text-gray-700 font-medium">Role</FormLabel>
                     <FormControl>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
-                        <SelectTrigger className="rounded-xl focus:ring-2 focus:ring-pink-400 focus:border-pink-400">
+                        <SelectTrigger className="rounded-xl focus:ring-2 focus:ring-orange-400 focus:border-orange-400">
                           <SelectValue placeholder="Select your role" />
                         </SelectTrigger>
                         <SelectContent>
@@ -189,7 +206,7 @@ export default function Register() {
               {/* Register Button */}
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-pink-600 to-pink-400 hover:from-pink-700 hover:to-pink-500 text-white font-semibold rounded-xl shadow-md transition-transform hover:scale-[1.02]"
+                className="w-full bg-gradient-to-r from-orange-600 to-orange-400 hover:from-orange-700 hover:to-orange-500 text-white font-semibold rounded-xl shadow-md transition-transform hover:scale-[1.02]"
               >
                 Register
               </Button>
@@ -200,7 +217,7 @@ export default function Register() {
         <CardFooter className="flex flex-col gap-3">
           <p className="text-sm text-center text-gray-500">
             Already have an account?{" "}
-            <Link to="/login" className="text-pink-600 font-medium hover:underline">Login</Link>
+            <Link to="/login" className="text-orange-600 font-medium hover:underline">Login</Link>
           </p>
         </CardFooter>
       </Card>

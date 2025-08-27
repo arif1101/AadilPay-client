@@ -135,9 +135,10 @@ export default function Navbar() {
           </Popover>
 
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2">
-            <Logo/>
+          <Link to="/" className="hidden md:flex items-center gap-2">
+            <Logo />
           </Link>
+
 
           {/* Desktop Nav */}
           <NavigationMenu className="max-md:hidden">
@@ -153,8 +154,6 @@ export default function Navbar() {
                       id={
                         link.label === "Dashboard"
                           ? "dashboard-link"
-                          : link.label === "Pricing"
-                          ? "pricing"
                           : link.label === "FAQ"
                           ? "faq-link"
                           : link.label === "Contact"
@@ -174,6 +173,7 @@ export default function Navbar() {
 
         {/* Right: Badge + Theme + Auth */}
         <div className="flex items-center gap-3">
+          {data && 
             <Tooltip>
               <TooltipTrigger>
                 <p
@@ -183,19 +183,20 @@ export default function Navbar() {
                   }}
                   className="bg-orange-500 hover:bg-orange-500 text-[14px] text-white px-4 py-1 rounded-2xl cursor-pointer"
                 >
-                  Tour Guide
+                  Guide
                 </p>
               </TooltipTrigger>
               <TooltipContent>
                 <p>click for guid</p>
               </TooltipContent>
             </Tooltip>
+          }
           {role && (
             <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold">
               {role}
             </span>
           )}
-          <div id="dashboard-cards">
+          <div id="theme-change">
             <Tooltip>
               <TooltipTrigger>
                 <ModeToggle/>

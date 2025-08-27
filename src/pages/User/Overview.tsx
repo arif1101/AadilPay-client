@@ -58,7 +58,7 @@ export default function WalletDashboard() {
           </motion.div>
 
           {/* Action Buttons */}
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               { href: "add-money",icon: <ArrowDownCircle className="h-8 w-8" />, label: "Add Money" },
               { href: "cash-out",icon: <ArrowUpCircle className="h-8 w-8" />, label: "Cash Out" },
@@ -69,15 +69,16 @@ export default function WalletDashboard() {
                 whileHover={{ scale: 1.05, rotate: 2 }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: "spring", stiffness: 250 }}
+                className=""
               >
                 <Link
                to={`/user/${action.href}`}
-                  className="flex flex-col items-center justify-center h-28 w-[300px] border-2 rounded-2xl bg-white hover:bg-gradient-to-br from-orange-100 to-orange-200 hover:shadow-xl transition"
+                  className="flex flex-col items-center justify-center h-28 w-[300px] border-2 rounded-2xl bg-white hover:bg-gradient-to-br from-orange-100 to-orange-200 hover:shadow-xl transition dark:bg-gray-900"
                 >
                   <div className="p-3 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 text-white shadow-md">
                     {action.icon}
                   </div>
-                  <span className="text-sm font-semibold mt-2 text-gray-700">
+                  <span className="text-sm font-semibold mt-2 text-gray-700 dark:text-white">
                     {action.label}
                   </span>
                 </Link>

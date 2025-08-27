@@ -16,7 +16,7 @@ export const userApi = baseApi.injectEndpoints({
                 method: "POST",
                 data: cashOutInfo
             }),
-
+            invalidatesTags: ["USER"]
         }),
         updateUser: builder.mutation({
             query: (updateInfo) => ({

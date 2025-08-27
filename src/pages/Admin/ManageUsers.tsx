@@ -68,7 +68,7 @@ export default function ManageUsers() {
   }
 
   return (
-    <div className="p-6">
+    <div className="md:p-6">
       <h1 className="text-3xl font-bold mb-6 text-gray-800 dark:text-white">
         Manage Users
       </h1>
@@ -101,7 +101,7 @@ export default function ManageUsers() {
           paginatedUsers?.map((user: any) => (
           <div
             key={user._id}
-            className="flex justify-between items-center p-4 bg-white border rounded-xl shadow-sm hover:shadow-md transition"
+            className="flex justify-between items-center p-4 bg-white border rounded-xl shadow-sm hover:shadow-md transition dark:bg-gray-900"
           >
             <div className="flex items-center gap-3">
               {/* Avatar */}
@@ -114,9 +114,9 @@ export default function ManageUsers() {
               </div>
 
               {/* Name and Email */}
-              <div className="flex flex-col">
-                <p className="font-semibold text-lg text-left text-gray-900">{user.name}</p>
-                <p className="text-sm text-gray-500">{user.email}</p>
+              <div className="flex flex-col dark:text-white">
+                <p className="font-semibold text-lg text-left text-gray-900 dark:text-white">{user.name}</p>
+                <p className="text-sm text-gray-500 dark:text-white">{user.email}</p>
               </div>
             </div>
 

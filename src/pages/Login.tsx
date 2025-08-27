@@ -60,10 +60,10 @@ export default function LoginCard() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-pink-50 via-white to-pink-100 p-4">
-      <Card className="w-full max-w-md shadow-xl border border-pink-100 rounded-2xl bg-white">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-orange-50 via-white to-orange-100 p-4">
+      <Card className="w-full max-w-md shadow-xl border border-orange-100 rounded-2xl bg-white">
         <CardHeader className="text-center space-y-2">
-          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-pink-600 to-pink-500 bg-clip-text text-transparent">
+          <CardTitle className="text-3xl font-bold bg-gradient-to-r from-orange-600 to-orange-500 bg-clip-text text-transparent">
             Welcome Back
           </CardTitle>
           <CardDescription className="text-gray-500">
@@ -87,7 +87,7 @@ export default function LoginCard() {
                     <FormControl>
                       <Input
                         placeholder="+8801XXXXXXXXX"
-                        className="focus:ring-2 focus:ring-pink-400 focus:border-pink-400 rounded-xl"
+                        className="focus:ring-2 focus:ring-orange-400 focus:border-orange-400 rounded-xl"
                         {...field}
                       />
                     </FormControl>
@@ -106,7 +106,7 @@ export default function LoginCard() {
                       <FormLabel className="text-gray-700 font-medium">Password</FormLabel>
                       <a
                         href="#"
-                        className="text-sm text-pink-600 hover:underline"
+                        className="text-sm text-orange-600 hover:underline"
                       >
                         Forgot?
                       </a>
@@ -115,7 +115,7 @@ export default function LoginCard() {
                       <Input
                         type="password"
                         placeholder="••••••••"
-                        className="focus:ring-2 focus:ring-pink-400 focus:border-pink-400 rounded-xl"
+                        className="focus:ring-2 focus:ring-orange-400 focus:border-orange-400 rounded-xl"
                         {...field}
                       />
                     </FormControl>
@@ -127,7 +127,7 @@ export default function LoginCard() {
               {/* Login Button */}
               <Button
                 type="submit"
-                className="w-full bg-gradient-to-r from-pink-600 to-pink-500 hover:from-pink-700 hover:to-pink-600 text-white font-semibold rounded-xl shadow-md transition-transform hover:scale-[1.02]"
+                className="w-full bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-700 hover:to-orange-600 text-white font-semibold rounded-xl shadow-md transition-transform hover:scale-[1.02]"
               >
                 Login
               </Button>
@@ -138,13 +138,13 @@ export default function LoginCard() {
         <CardFooter className="flex flex-col gap-3">
           <Button
             variant="outline"
-            className="w-full rounded-xl shadow-sm hover:bg-pink-50 border-pink-200 text-pink-600"
+            className="w-full rounded-xl shadow-sm hover:bg-orange-50 border-orange-200 text-orange-600"
           >
             Login with Google
           </Button>
           <p className="text-sm text-center text-gray-500">
             Don’t have an account?{" "}
-            <Link to="/register" className="text-pink-600 font-medium hover:underline">Sign up</Link>
+            <Link to="/register" className="text-orange-600 font-medium hover:underline">Sign up</Link>
           </p>
         </CardFooter>
       </Card>

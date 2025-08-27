@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
 
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
@@ -13,7 +11,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Link, useNavigate } from "react-router"
+import { Link } from "react-router"
 
 type FormValues = {
   name: string
@@ -23,7 +21,6 @@ type FormValues = {
 }
 
 export default function AdminProfile() {
-  const navigate= useNavigate()
   const { data: adminInfo, isLoading, isError, refetch } = useGetAdminQuery(undefined)
   const [updateAdmin, { isLoading: isUpdating }] = useUpdateAdminMutation()
 
@@ -74,6 +71,11 @@ export default function AdminProfile() {
       }
     }
   }
+  
+  useEffect(() => {
+    refetch()
+  }, [])
+
 
   if (isLoading) {
     return (
@@ -94,47 +96,48 @@ export default function AdminProfile() {
 
   if (isError) {
     return (
-      toast.success("login again"),
-      navigate("/login")
-      // <div className="max-w-4xl mx-auto p-8">
-      //   <Card className="rounded-2xl shadow-md border-red-300">
-      //     <CardHeader>
-      //       <CardTitle className="text-red-600">Admin Profile</CardTitle>
-      //     </CardHeader>
-      //     <CardContent>
-      //       <p className="text-sm text-red-500">Failed to load admin info.</p>
-      //       <h1 className="text-xl font-semibold text-red-600">
-      //         Changed number. Please login again.
-      //       </h1>
-      //       <Link
-      //         to="/login"
-      //         className="inline-block mt-3 text-orange-600 hover:underline"
-      //       >
-      //         Retry
-      //       </Link>
-      //     </CardContent>
-      //   </Card>
-      // </div>
+      // toast.success("login again"),
+      // navigate("/login")
+      <div className="max-w-4xl mx-auto p-8">
+        <Card className="rounded-2xl shadow-md border-red-300">
+          <CardHeader>
+            <CardTitle className="text-red-600">Admin Profile</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-red-500">Failed to load admin info.</p>
+            <h1 className="text-xl font-semibold text-red-600">
+              Changed number. Please login again.
+            </h1>
+            <Link
+              to="/login"
+              className="inline-block mt-3 text-orange-600 hover:underline"
+            >
+              Retry
+            </Link>
+          </CardContent>
+        </Card>
+      </div>
     )
   }
 
   return (
-    <div className="w-full mx-auto p-8">
+    <div className="w-full mx-auto md:p-8">
       <Tabs defaultValue="overview" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-orange-50 rounded-xl p-1">
+        <TabsList className="grid w-full grid-cols-2 bg-orange-50 dark:bg-gray-800 rounded-xl p-1">
           <TabsTrigger
             value="overview"
-            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white rounded-lg"
+            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white rounded-lg dark:data-[state=active]:bg-orange-400 dark:data-[state=active]:text-gray-900"
           >
             Overview
           </TabsTrigger>
           <TabsTrigger
             value="edit"
-            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white rounded-lg"
+            className="data-[state=active]:bg-orange-500 data-[state=active]:text-white rounded-lg dark:data-[state=active]:bg-orange-400 dark:data-[state=active]:text-gray-900"
           >
             Update Profile
           </TabsTrigger>
         </TabsList>
+
 
         {/* Overview */}
         <TabsContent value="overview" className="mt-6">
