@@ -153,7 +153,9 @@ You can deploy easily on:
 
 Once deployed, add your **Live URL** here:
 
-👉 **Live Demo:** [https://adilpay.vercel.app](https://adilpay.vercel.app) *(replace after deployment)*
+👉 **Live Demo:** [https://aadil-pay-client.vercel.app/
+](https://aadil-pay-client.vercel.app/
+)
 
 ---
 
