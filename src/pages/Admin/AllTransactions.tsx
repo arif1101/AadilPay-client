@@ -57,7 +57,7 @@ const [type, setType] = useState("all")
   const totalPages = Math.ceil(filtered.length / pageSize)
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="md:p-6 space-y-6">
       <h1 className="text-3xl font-bold">
         Transactions{" "}
         <span className="text-gray-500 text-lg">

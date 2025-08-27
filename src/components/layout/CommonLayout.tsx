@@ -11,32 +11,33 @@ export default function CommonLayout({children}:IProps) {
 
   const [runTour, setRunTour] = useState(false)
 
-  const steps = [
-    {
-      target: "#nav-menu",
-      content: "This is the navigation menu. Use it to switch between sections.",
-    },
-    {
-      target: "#dashboard-cards",
-      content: "Quick stats about transactions are shown here.",
-    },
-    {
-      target: "#pricing",
-      content: "Here is all transaction overview",
-    },
-    {
-      target: "#faq-link",
-      content: "This is your all transactions history",
-    },
-    {
-      target: "#contact-link",
-      content: "This is your all transactions history",
-    },
-    {
-      target: "#dashboard-link",
-      content: "Here you can visualize your all transacitons.",
-    }
-  ]
+const steps = [
+  {
+    target: "#nav-menu",
+    content: "Use the navigation menu to quickly switch between different sections of your dashboard.",
+  },
+  {
+    target: "#theme-change",
+    content: "Here you can toggle between light and dark themes for a better viewing experience.",
+  },
+  {
+    target: "#pricing",
+    content: "This section gives you a complete overview of your transactions and balances.",
+  },
+  {
+    target: "#faq-link",
+    content: "Check your detailed transaction history including cash-in and cash-out records.",
+  },
+  {
+    target: "#contact-link",
+    content: "Need help? Use this section to contact support or reach out for assistance.",
+  },
+  {
+    target: "#dashboard-link",
+    content: "Visualize your transactions through charts and summaries on the main dashboard.",
+  },
+]
+
 
 useEffect(() => {
   const seenTour = localStorage.getItem("seenTour");
@@ -55,35 +56,35 @@ useEffect(() => {
         <Navbar/>
 
       {/* Joyride here */}
-<Joyride
-  steps={steps}
-  run={runTour}
-  continuous
-  showSkipButton
-  disableScrolling={true}
-  styles={{
-    options: {
-      primaryColor: "#f97316",
-      zIndex: 10000,
-      textColor: "#333",
-      backgroundColor: "#fff8f1",
-    },
-    tooltip: {
-      fontSize: "1rem",
-      padding: "1.5rem",
-    },
-    buttonClose: {
-      color: "#f97316",
-    },
-    buttonNext: {
-      backgroundColor: "#f97316",
-      color: "#fff",
-    },
-    buttonBack: {
-      color: "#f97316",
-    },
-  }}
-/>
+        <Joyride
+          steps={steps}
+          run={runTour}
+          continuous
+          showSkipButton
+          disableScrolling={true}
+          styles={{
+            options: {
+              primaryColor: "#f97316",
+              zIndex: 10000,
+              textColor: "#333",
+              backgroundColor: "#fff8f1",
+            },
+            tooltip: {
+              fontSize: "1rem",
+              padding: "1.5rem",
+            },
+            buttonClose: {
+              color: "#f97316",
+            },
+            buttonNext: {
+              backgroundColor: "#f97316",
+              color: "#fff",
+            },
+            buttonBack: {
+              color: "#f97316",
+            },
+          }}
+        />
 
         
         <div className='grow'>

@@ -16,6 +16,8 @@ import { Input } from "@/components/ui/input"
 import { Phone, DollarSign, Send } from "lucide-react"
 import { useCashOutMutation } from "@/redux/features/user/user.api"
 import { toast } from "sonner"
+import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { Link } from "react-router"
 
 // Define validation schema
 const formSchema = z.object({
@@ -31,6 +33,8 @@ const formSchema = z.object({
 export function CashOut() {
 
   const [cashOut] = useCashOutMutation()
+  const {data : userData} = useUserInfoQuery(undefined)
+  const walletStatus = userData?.data?.wallet?.status 
   
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,94 +71,102 @@ export function CashOut() {
   }
 
   return (
-    <div className="max-w-5xl w-full mx-auto p-6  gap-8 flex justify-between ">
-      {/* Left: Cash Out Form */}
-      <div className=" w-3/5">
-        <h1 className="text-3xl font-bold mb-6">Cash Out</h1>
+    <div className="max-w-5xl w-full p-6">
+      {walletStatus === "BLOCKED" ? (
+        <div className="mx-auto">
+            <h1 className="text-xl font-semibold mb-4">you are blocked. contact to support</h1>
+            <Button className="bg-orange-500 hover:bg-orange-600"><Link to={"/contact"}>contact</Link></Button>
+        </div>
+        
+      ) : (
+        <div className="flex gap-8 flex-col md:flex-row">
+          <div className=" md:w-3/5">
+            <h1 className="text-3xl font-bold mb-6">Cash Out</h1>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            {/* Phone field */}
-            <FormField
-              control={form.control}
-              name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Agent Number</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <Phone className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input placeholder="Enter phone number" {...field} className="pl-8" />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                {/* Phone field */}
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Agent Number</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <Phone className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input placeholder="Enter phone number" {...field} className="pl-8" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Amount field */}
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <div className="relative">
-                      <DollarSign className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        type="number"
-                        placeholder="Enter amount"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                        className="pl-8"
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                {/* Amount field */}
+                <FormField
+                  control={form.control}
+                  name="amount"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Amount</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                          <DollarSign className="absolute left-2 top-3 h-4 w-4 text-muted-foreground" />
+                          <Input
+                            type="number"
+                            placeholder="Enter amount"
+                            {...field}
+                            onChange={(e) => field.onChange(Number(e.target.value))}
+                            className="pl-8"
+                          />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-            {/* Submit button */}
-            {form.formState.errors.root && (
-              <p className="text-red-500 text-sm">
-                {form.formState.errors.root.message}
-              </p>
-            )}
+                {/* Submit button */}
+                {form.formState.errors.root && (
+                  <p className="text-red-500 text-sm">
+                    {form.formState.errors.root.message}
+                  </p>
+                )}
 
-            <Button type="submit" className="w-full flex items-center gap-2 bg-orange-500 hover:bg-orange-600">
-              <Send className="h-4 w-4" />
-              Cash Out
-            </Button>
-          </form>
-        </Form>
-      </div>
+                <Button type="submit" className="w-full flex items-center gap-2 bg-orange-500 hover:bg-orange-600">
+                  <Send className="h-4 w-4" />
+                  Cash Out
+                </Button>
+              </form>
+            </Form>
+          </div>
+          <div className="md:w-[40%]">
+            <h2 className="text-2xl font-semibold mb-4">FAQ</h2>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="q1">
+                <AccordionTrigger>What is the minimum cash out amount?</AccordionTrigger>
+                <AccordionContent>
+                  The minimum cash out amount is <strong>1</strong>.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q2">
+                <AccordionTrigger>How long does it take to process?</AccordionTrigger>
+                <AccordionContent>
+                  Cash outs are usually processed <strong>instantly</strong>, but may take up to a few minutes.
+                </AccordionContent>
+              </AccordionItem>
+              <AccordionItem value="q3">
+                <AccordionTrigger>Are there any fees?</AccordionTrigger>
+                <AccordionContent>
+                  A small transaction fee may apply depending on the amount.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        </div>
+      )}
 
-      {/* Right: FAQ Section */}
-      <div className="w-[30%]">
-        <h2 className="text-2xl font-semibold mb-4">FAQ</h2>
-        <Accordion type="single" collapsible className="w-full">
-          <AccordionItem value="q1">
-            <AccordionTrigger>What is the minimum cash out amount?</AccordionTrigger>
-            <AccordionContent>
-              The minimum cash out amount is <strong>1</strong>.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="q2">
-            <AccordionTrigger>How long does it take to process?</AccordionTrigger>
-            <AccordionContent>
-              Cash outs are usually processed <strong>instantly</strong>, but may take up to a few minutes.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="q3">
-            <AccordionTrigger>Are there any fees?</AccordionTrigger>
-            <AccordionContent>
-              A small transaction fee may apply depending on the amount.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </div>
     </div>
   )
 }

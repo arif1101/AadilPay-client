@@ -1,5 +1,5 @@
-"use client"
-
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -16,19 +16,23 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useUserInfoQuery } from "@/redux/features/auth/auth.api"
+import { useUpdateUserMutation } from "@/redux/features/user/user.api"
+import { toast } from "sonner"
 import { ShieldCheck, Smartphone, User, Wallet } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 
-// schemas
+// --- Schemas ---
 const infoSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters"),
-  phone: z.string().min(11, "Phone number must be valid"),
-})
+  name: z.string().optional(),
+  email: z.string().optional(),
+}).refine(
+  (data) => data.name || data.email,
+  { message: "You must provide either name or email" }
+)
 
 const passwordSchema = z
   .object({
-    oldPassword: z.string().min(6),
-    newPassword: z.string().min(6),
+    newPassword: z.string().min(6, "New password must be at least 6 characters"),
     confirmPassword: z.string(),
   })
   .refine((d) => d.newPassword === d.confirmPassword, {
@@ -36,23 +40,61 @@ const passwordSchema = z
     path: ["confirmPassword"],
   })
 
+
 export default function AgentProfile() {
   const { data: agentInfo } = useUserInfoQuery(undefined)
+  const [updateUser, { isLoading }] = useUpdateUserMutation()
   const user = agentInfo?.data?.user
   const wallet = agentInfo?.data?.wallet
 
-  // forms
+  // --- Forms ---
   const infoForm = useForm<z.infer<typeof infoSchema>>({
     resolver: zodResolver(infoSchema),
-    defaultValues: { name: "", phone: "" },
-  })
-  const passForm = useForm<z.infer<typeof passwordSchema>>({
-    resolver: zodResolver(passwordSchema),
-    defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" },
+    defaultValues: {
+      name: user?.name || "",
+      email: user?.email || "",
+    },
   })
 
+const passForm = useForm<z.infer<typeof passwordSchema>>({
+  resolver: zodResolver(passwordSchema),
+  defaultValues: { newPassword: "", confirmPassword: "" },
+})
+
+  // --- Handlers ---
+  const handleInfoSubmit = async (values: z.infer<typeof infoSchema>) => {
+    const filteredValues = Object.fromEntries(
+      Object.entries(values).filter(([_, v]) => v !== "" && v !== undefined)
+    );
+    if (Object.keys(filteredValues).length === 0) {
+      toast.error("Please enter at least name or email")
+      return;
+    }
+
+    try {
+      await updateUser(filteredValues).unwrap();
+      toast.success("Profile updated successfully");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to update profile");
+    }
+  };
+
+
+const handlePasswordSubmit = async (values: z.infer<typeof passwordSchema>) => {
+  try {
+    const payload = { password: values.newPassword }
+    const result = await updateUser(payload).unwrap()
+    console.log(result)
+    passForm.reset()
+    toast.success("Password updated successfully")
+  } catch (err: any) {
+    toast.error(err?.data?.message || "Failed to update password")
+  }
+}
+
+
   return (
-    <div className="p-8 w-full mx-auto space-y-8">
+    <div className="md:p-8 w-full mx-auto space-y-8">
       {/* Header */}
       <div>
         <h1 className="text-3xl font-bold text-orange-600">Agent Profile</h1>
@@ -81,6 +123,12 @@ export default function AgentProfile() {
                   <User className="h-5 w-5 text-blue-500" />
                   <p>
                     <strong>Name:</strong> {user?.name}
+                  </p>
+                </div>
+                <div className="flex items-center gap-3">
+                  <User className="h-5 w-5 text-blue-500" />
+                  <p>
+                    <strong>Email:</strong> {user?.email}
                   </p>
                 </div>
                 <div className="flex items-center gap-3">
@@ -134,7 +182,7 @@ export default function AgentProfile() {
           </Card>
         </TabsContent>
 
-        {/* Update Profile */}
+        {/* Update Name + Email */}
         <TabsContent value="update">
           <Card className="shadow-md rounded-2xl">
             <CardHeader>
@@ -143,9 +191,7 @@ export default function AgentProfile() {
             <CardContent>
               <Form {...infoForm}>
                 <form
-                  onSubmit={infoForm.handleSubmit((v) =>
-                    console.log("Update Info:", v)
-                  )}
+                  onSubmit={infoForm.handleSubmit(handleInfoSubmit)}
                   className="space-y-4"
                 >
                   <FormField
@@ -163,12 +209,12 @@ export default function AgentProfile() {
                   />
                   <FormField
                     control={infoForm.control}
-                    name="phone"
+                    name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Phone</FormLabel>
+                        <FormLabel>Email</FormLabel>
                         <FormControl>
-                          <Input placeholder="017xxxxxxxx" {...field} />
+                          <Input placeholder="you@example.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -176,9 +222,10 @@ export default function AgentProfile() {
                   />
                   <Button
                     type="submit"
+                    disabled={isLoading}
                     className="bg-orange-500 hover:bg-orange-600"
                   >
-                    Save Changes
+                    {isLoading ? "Saving..." : "Save Changes"}
                   </Button>
                 </form>
               </Form>
@@ -195,55 +242,41 @@ export default function AgentProfile() {
             <CardContent>
               <Form {...passForm}>
                 <form
-                  onSubmit={passForm.handleSubmit((v) =>
-                    console.log("Password Change:", v)
-                  )}
+                  onSubmit={passForm.handleSubmit(handlePasswordSubmit)}
                   className="space-y-4"
                 >
-                  <FormField
-                    control={passForm.control}
-                    name="oldPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Old Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={passForm.control}
-                    name="newPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>New Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={passForm.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                <FormField
+                  control={passForm.control}
+                  name="newPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>New Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={passForm.control}
+                  name="confirmPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Confirm Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                   <Button
                     type="submit"
+                    disabled={isLoading}
                     className="bg-orange-500 hover:bg-orange-600"
                   >
-                    Update Password
+                    {isLoading ? "Updating..." : "Update Password"}
                   </Button>
                 </form>
               </Form>
