@@ -16,6 +16,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useUpdateUserMutation } from "@/redux/features/user/user.api";
+import { toast } from "sonner";
 
 type Props = {
   user: {
@@ -47,6 +48,7 @@ export default function UpdateAdminModal({ user }: Props) {
       await updateUser(filteredData).unwrap();
       setOpen(false);
       reset();
+      toast.success("successfully updated")
     } catch (error) {
       console.error("Update failed:", error);
     }
